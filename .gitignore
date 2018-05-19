@@ -102,3 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Don't track qemu-user-static binaries
+qemu-*-static
