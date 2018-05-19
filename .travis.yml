@@ -1,0 +1,96 @@
+sudo: required
+os: linux
+dist: trusty
+services:
+- docker
+language: bash
+git:
+  depth: 1
+
+branches:
+  only:
+  - master
+  - /^ci-.*$/
+
+install:
+- sudo apt-get update
+- sudo apt-get install --yes docker-ce
+
+env:
+  matrix:
+  - SERVICE=alertmanager
+  - SERVICE=caddy
+  - SERVICE=cadvisor
+  - SERVICE=dante
+  - SERVICE=grafana
+  - SERVICE=node-exporter
+  - SERVICE=prometheus
+
+script:
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+# Builds, expecially on not amd64 architecture, could be really slow.
+# Let's regularly print something on stdout so build does not get stopped.
+# github.com/m3t/travis_wait allows a better experience respect the base travis_wait
+# as output is available as it gets generated
+- curl --location https://raw.githubusercontent.com/m3t/travis_wait/dd03eb0ed361bc6cc170d9bd5b648b40183eb288/travis_wait --output /tmp/travis_wait
+- chmod +x /tmp/travis_wait
+# FIX: s/-j 1/-j 2/
+- /tmp/travis_wait --limit 3600 "make -j 1 build-${SERVICE}"  # -j 2 as we're building 2 platforms, --limit 3600 to cap build time to 1h
+- make push-${SERVICE}
+
+jobs:
+  include:
+    - &tag-SERVICE
+      stage: tag-SERVICE
+      script: make tag-${SERVICE}
+      env: SERVICE=alertmanager
+    - <<: *tag-SERVICE
+      env: SERVICE=caddy
+    - <<: *tag-SERVICE
+      env: SERVICE=cadvisor
+    - <<: *tag-SERVICE
+      env: SERVICE=dante
+    - <<: *tag-SERVICE
+      env: SERVICE=grafana
+    - <<: *tag-SERVICE
+      env: SERVICE=node-exporter
+    - <<: *tag-SERVICE
+      env: SERVICE=prometheus
+    - &push-manifest-SERVICE-sha
+      stage: push-manifest-SERVICE-sha
+      script: make push-manifest-${SERVICE}-sha
+      env: SERVICE=alertmanager
+    - <<: *push-manifest-SERVICE-sha
+      env: SERVICE=caddy
+    - <<: *push-manifest-SERVICE-sha
+      env: SERVICE=cadvisor
+    - <<: *push-manifest-SERVICE-sha
+      env: SERVICE=dante
+    - <<: *push-manifest-SERVICE-sha
+      env: SERVICE=grafana
+    - <<: *push-manifest-SERVICE-sha
+      env: SERVICE=node-exporter
+    - <<: *push-manifest-SERVICE-sha
+      env: SERVICE=prometheus
+    - &push-manifest-SERVICE
+      stage: push-manifest-SERVICE
+      script: make push-manifest-${SERVICE}
+      env: SERVICE=alertmanager
+    - <<: *push-manifest-SERVICE
+      env: SERVICE=caddy
+    - <<: *push-manifest-SERVICE
+      env: SERVICE=cadvisor
+    - <<: *push-manifest-SERVICE
+      env: SERVICE=dante
+    - <<: *push-manifest-SERVICE
+      env: SERVICE=grafana
+    - <<: *push-manifest-SERVICE
+      env: SERVICE=node-exporter
+    - <<: *push-manifest-SERVICE
+      env: SERVICE=prometheus
+
+notifications:
+  email: false
+  slack:
+    # nofitication
+    secure: N4SeKE16m4R7fejlxzCwUaPQLh6c/4PhVq02QAe9ejZ0B8YFmMwUcTnPYi1gLDk0TtlOWf3g+dqHLRY1J27HkVqGu0V+0BA+al1rJMu04PVCbVf2noFydbvlGzvb314PmfztA2VpI2p/gchZbSuaURL5a+H9vvYehQjxrld2Ull5OE5vb7zwbPWzBvTFo7R/Q0VTEx8aPUnXnEXFe87y4t2wg465x19MjllRCA0N4teZli3cVfT2fmLN4qfFSUfvPYfQLfjWuz2wc+vyAikSyvSpsLHco0AQtxMpWTjdDXHqwkg1/iQWCE8YuxS/1Qf+mLWONR0+CcP4cJzF4NaohykYkCeJ1EARxIvdUBSlzkMmgeYwfVf0U4MUkb8+9xZgYkBR6NgRNvTvYMjG6AI2b0tgPub2QIt8sk0Mll+3IIw6+h+h/MdHVe/J2b+OycLkfWd3ixrhtEz43HAjeY/A9rfKQ2XR5f7SHk8Jtg7nFez+G5xCrluHdISJs+fbzCyPsSOzWen3w1V5UEwdtoRPbVSz0LJCs08ukQ4GPTPvCwQaPRnWK0V6408LSmlKQuDO3EWDrW7S/qnMmjKmdYbLpvB0xYOOzRv8VUOdKudGMIDDP1h9MrYahGwVfLuOeL9Wjlnpufy51u2B6g2y5mzT5T+fUgxDPt6AQS5qSyYoL1E=
