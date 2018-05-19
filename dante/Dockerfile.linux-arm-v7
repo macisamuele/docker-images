@@ -1,0 +1,40 @@
+FROM arm32v7/debian:stretch-slim AS dante
+LABEL MAINTAINER="Samuele Maci <macisamuele@gmail.com>"
+LABEL DESCRIPTION="[Socks Server] dante"
+LABEL PLATFORM="armhf"
+
+# Add qemu-*-static to allow execution of the build process from any platform
+COPY qemu-*-static /usr/bin
+
+# Copy initial configurations
+# NOTE: if the configurations are not ideal for your use case
+#       you can override them by attaching the related volume
+COPY config /etc/dante/
+
+# Install dante
+ENV DANTE_VERSION=1.4.1+dfsg-5
+RUN set -eux && \
+    apt-get update && \
+    # Build dependencies
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+        dante-server=${DANTE_VERSION} && \
+    rm -rf /var/lib/apt/lists/*
+
+# Container port, privileges and volumes
+EXPOSE 1080
+# NOTE: USER is not defined because dante-server needs to be executed by root in order
+#       to support authentication.
+#       danted will ensure priviledge drop to ${RUN_USER} once connection is authenticated.
+# WARNING: make sure that 'user.unprivileged' in the config file is a user available
+#          on the container (at the current state it is defined to drop priviledges to nobody)
+VOLUME [ \
+    "/etc/dante" \
+]
+
+# Default command
+CMD [ \
+    "/usr/sbin/danted", \
+        "-f", "/etc/dante/dante.conf", \
+        "-p", "/tmp/danted.pid", \
+        "-N", "10" \
+]
