@@ -33,7 +33,7 @@ echo "Copy docker context in temporary directory"
 cp -R "${DOCKER_CONTEXT_DIRECTORY}" "${TMP_DIR}/context"
 
 echo "Fetch qemu-user-static from github (allow to run resulting image on all platforms)"
-curl --location "$(qemu_user_static_link "${BUILD_PLATFORM}")" | \
+curl --silent --location "$(qemu_user_static_link "${BUILD_PLATFORM}")" | \
     tar -xz -C "${TMP_DIR}/context"
 
 echo "Start effective docker image build"

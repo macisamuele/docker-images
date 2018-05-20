@@ -34,8 +34,7 @@ script:
 # as output is available as it gets generated
 - curl --location https://raw.githubusercontent.com/m3t/travis_wait/dd03eb0ed361bc6cc170d9bd5b648b40183eb288/travis_wait --output /tmp/travis_wait
 - chmod +x /tmp/travis_wait
-# FIX: s/-j 1/-j 2/
-- /tmp/travis_wait --limit 3600 "make -j 1 build-${SERVICE}"  # -j 2 as we're building 2 platforms, --limit 3600 to cap build time to 1h
+- /tmp/travis_wait --limit 3600 "make -j 2 build-${SERVICE}"  # -j 2 as we're building 2 platforms, --limit 3600 to cap build time to 1h
 - make push-${SERVICE}
 
 jobs:
