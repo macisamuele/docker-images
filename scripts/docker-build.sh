@@ -36,6 +36,9 @@ echo "Fetch qemu-user-static from github (allow to run resulting image on all pl
 curl --silent --location "$(qemu_user_static_link "${BUILD_PLATFORM}")" | \
     tar -xz -C "${TMP_DIR}/context"
 
+echo "Register qemu-user-static binfmt"
+${DOCKER} run --rm --privileged multiarch/qemu-user-static:register --reset
+
 echo "Start effective docker image build"
 # shellcheck disable=SC2086
 ${DOCKER} build ${DOCKER_BUILD_OPTIONS:-} \

@@ -7,7 +7,7 @@ ENV GOARCH=arm \
     GOARM=7 \
     GOOS=linux
 
-RUN go get \
+RUN go get -v \
     github.com/prometheus/alertmanager/cmd/alertmanager
 
 FROM arm32v7/debian:stretch-slim AS alertmanager

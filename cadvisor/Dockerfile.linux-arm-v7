@@ -12,8 +12,9 @@ ENV GOARCH=arm \
 RUN set -eux && \
     apt-get update && \
     DEBIAN_FRONTEND=interactive apt-get install -y gcc-arm-linux-gnueabi && \
-    go get -ldflags '-extldflags "-static"' github.com/google/cadvisor
-
+    go get -v \
+        -ldflags '-extldflags "-static"' \
+        github.com/google/cadvisor
 
 FROM arm32v7/debian:stretch-slim AS cadvisor
 LABEL MAINTAINER="Samuele Maci <macisamuele@gmail.com>"

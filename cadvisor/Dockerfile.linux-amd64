@@ -7,7 +7,9 @@ ENV GOARCH=amd64 \
     GOOS=linux \
     CGO_ENABLED=1
 
-RUN go get -ldflags '-extldflags "-static"' github.com/google/cadvisor
+RUN go get -v \
+    -ldflags '-extldflags "-static"' \
+    github.com/google/cadvisor
 
 FROM amd64/debian:stretch-slim AS cadvisor
 LABEL MAINTAINER="Samuele Maci <macisamuele@gmail.com>"

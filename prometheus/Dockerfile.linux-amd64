@@ -6,7 +6,7 @@ LABEL PLATFORM="amd64"
 ENV GOARCH=amd64 \
     GOOS=linux
 
-RUN go get \
+RUN go get -v \
     github.com/prometheus/prometheus/cmd/promtool \
     github.com/prometheus/prometheus/cmd/prometheus
 
