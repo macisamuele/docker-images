@@ -15,7 +15,7 @@ LABEL DESCRIPTION="[Monitoring Tools] cadvisor"
 LABEL PLATFORM="amd64"
 
 # Add qemu-*-static to allow execution of the build process from any platform
-COPY qemu-*-static /usr/bin
+COPY qemu-*-static /usr/bin/
 
 # Create container user
 ENV RUN_USER cadvisord

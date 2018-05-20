@@ -4,7 +4,7 @@ LABEL DESCRIPTION="[Socks Server] dante"
 LABEL PLATFORM="amd64"
 
 # Add qemu-*-static to allow execution of the build process from any platform
-COPY qemu-*-static /usr/bin
+COPY qemu-*-static /usr/bin/
 
 # Copy initial configurations
 # NOTE: if the configurations are not ideal for your use case

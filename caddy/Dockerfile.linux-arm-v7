@@ -15,7 +15,7 @@ LABEL DESCRIPTION="[Monitoring Tools] caddy"
 LABEL PLATFORM="armhf"
 
 # Add qemu-*-static to allow execution of the build process from any platform
-COPY qemu-*-static /usr/bin
+COPY qemu-*-static /usr/bin/
 
 # Copy initial configurations
 # NOTE: if the configurations are not ideal for your use case

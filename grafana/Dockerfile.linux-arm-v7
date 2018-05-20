@@ -4,7 +4,7 @@ LABEL DESCRIPTION="[Monitoring Tools - bin downloader] grafana"
 LABEL PLATFORM="armhf"
 
 # Add qemu-*-static to allow execution of the build process from any platform
-COPY qemu-*-static /usr/bin
+COPY qemu-*-static /usr/bin/
 
 ENV DEBIAN_VERSION=stretch \
     GRAFANA_VERSION=5.0.4
@@ -30,7 +30,7 @@ LABEL DESCRIPTION="[Monitoring Tools] grafana"
 LABEL PLATFORM="armhf"
 
 # Add qemu-*-static to allow execution of the build process from any platform
-COPY qemu-*-static /usr/bin
+COPY qemu-*-static /usr/bin/
 
 # Create container user
 ENV RUN_USER grafanad
