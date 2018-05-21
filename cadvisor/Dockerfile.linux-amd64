@@ -44,10 +44,9 @@ USER ${RUN_USER}
 CMD [ \
     "/bin/cadvisor",  \
         "-alsologtostderr", \
-        "-global_housekeeping_interval", "5m0s", \
-        "-housekeeping_interval", "5m0s", \
+        "-global_housekeeping_interval", "1m0s", \
+        "-housekeeping_interval", "10s", \
         "-log_cadvisor_usage", \
-        "-max_housekeeping_interval", "5m0s", \
+        "-max_housekeeping_interval", "30s", \
         "-max_procs", "1" \
 ]
-
