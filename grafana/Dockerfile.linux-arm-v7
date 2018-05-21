@@ -7,14 +7,14 @@ LABEL PLATFORM="armhf"
 COPY qemu-*-static /usr/bin/
 
 ENV DEBIAN_VERSION=stretch \
-    GRAFANA_VERSION=5.0.4
+    GRAFANA_VERSION=5.1.3
 
 RUN set -eux && \
     apk update && \
     apk add --virtual .build-deps curl && \
     tar_gz_url=https://github.com/fg2it/grafana-on-raspberry/releases/download/v${GRAFANA_VERSION}/grafana-${GRAFANA_VERSION}.linux-armhf.tar.gz; \
     # sha256 of the tar file for checksum verification (Found no way to automatically fetch this)
-    tar_gz_sha256=f03f0b8144785cbacaff18654a73bf9bc79762bde6ce8888c30671c38e3e4ada; \
+    tar_gz_sha256=bde620b6cb456b4f8fce57cfec06c505a9ddb2942cad39c4ae5e97d89cdb7899; \
     curl --location ${tar_gz_url} > /tmp/grafana-${GRAFANA_VERSION}.tar.gz && \
     echo "${tar_gz_sha256}  /tmp/grafana-${GRAFANA_VERSION}.tar.gz" | sha256sum -c && \
     tar xvf /tmp/grafana-${GRAFANA_VERSION}.tar.gz -C /tmp/ && \
