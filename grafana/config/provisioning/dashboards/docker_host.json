@@ -1130,6 +1130,7 @@
             "alignAsTable": true,
             "avg": true,
             "current": false,
+            "hideZero": true,
             "max": true,
             "min": true,
             "rightSide": true,
@@ -1147,7 +1148,7 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 12,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
