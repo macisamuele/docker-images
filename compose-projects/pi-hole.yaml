@@ -1,0 +1,30 @@
+networks:
+  pi_hole_net:
+    driver: bridge
+
+services:
+  pihole:
+    environment:
+      ServerIP: ${HOST_IP}
+      PROXY_LOCATION: pihole
+      VIRTUAL_HOST: pihole.macisamuele.ddns.net
+      VIRTUAL_PORT: 80
+      WEBPASSWORD: admin
+    # image: diginc/pi-hole:latest
+    image: diginc/pi-hole-multiarch:debian_armhf
+    networks:
+    - pi_hole_net
+    ports:
+      - "5353:53/tcp"
+      - "5353:53/udp"
+      - "80:80/tcp"
+    restart: on-failure:3
+    volumes:
+    - pi_hole_dnsmasq:/etc/dnsmasq.d
+    - pi_hole_data:/etc/pihole/
+
+volumes:
+  pi_hole_data: {}
+  pi_hole_dnsmasq: {}
+
+version: '3.6'
