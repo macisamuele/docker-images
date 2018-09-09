@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail -o posix -o functrace
+set -euo pipefail -o posix -o functrace
 
 declare -a not_executable_bash_scripts
 

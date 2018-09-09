@@ -4,7 +4,7 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-set -euxo pipefail -o posix -o functrace
+set -euo pipefail -o posix -o functrace
 # shellcheck source=scripts/common.sh
 source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/common.sh"
 
