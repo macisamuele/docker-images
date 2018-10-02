@@ -44,8 +44,8 @@ echo "Pulling ${latest_platform_image_name} to speed-up build. This is usually a
 ${DOCKER} pull "${latest_platform_image_name}" || echo "Pull failed, but it was a tentative so that's OK"
 
 if [ "${SERVICE_NAME}" = "openvpn" ]; then
-    echo "Move Dockerfile to ${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}")"
-    mv "${TMP_DIR}/context/Dockerfile" "${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}")"
+    echo "Copy Dockerfile to ${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}") and add qemu-*-static"
+    sed -r 's|(FROM.*)|\1\n# Add qemu-*-static to allow execution of the build process from any platform\nCOPY qemu-*-static /usr/bin/\n|' "${TMP_DIR}/context/Dockerfile" > "${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}")"
 fi
 
 echo "Start effective docker image build"
