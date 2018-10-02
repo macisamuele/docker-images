@@ -24,6 +24,7 @@ env:
   - SERVICE=dante
   - SERVICE=grafana       MAKEFLAGS="-j 2" # Run jobs in parallel as grafana build takes a lot of time
   - SERVICE=node-exporter
+  - SERVICE=openvpn
   - SERVICE=prometheus
 
 script:
