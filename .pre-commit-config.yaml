@@ -15,7 +15,6 @@ repos:
   - id: debug-statements
   - id: fix-encoding-pragma
   - id: flake8
-  - id: forbid-new-submodules
   - id: mixed-line-ending
     args:
     - --fix
