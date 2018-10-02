@@ -43,10 +43,15 @@ latest_platform_image_name="$(docker_latest_platform_image_name "${SERVICE_NAME}
 echo "Pulling ${latest_platform_image_name} to speed-up build. This is usually a correct guess especially during docker cross architecture builing"
 ${DOCKER} pull "${latest_platform_image_name}" || echo "Pull failed, but it was a tentative so that's OK"
 
+if [ "${SERVICE_NAME}" = "openvpn" ]; then
+    echo "Move Dockerfile to ${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}")"
+    mv "${TMP_DIR}/context/Dockerfile" "${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}")"
+fi
+
 echo "Start effective docker image build"
 # shellcheck disable=SC2086
 ${DOCKER} build ${DOCKER_BUILD_OPTIONS:-} \
-    --file "${TMP_DIR}/context/$(dockerfile ${BUILD_PLATFORM})" \
+    --file "${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}")" \
     --force-rm \
     --pull \
     --memory-swap -1 \
