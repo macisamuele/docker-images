@@ -1,0 +1,20 @@
+networks:
+  monitor-net:
+    driver: bridge
+
+services:
+  openvpn:
+    ports:
+    - 1194:1194/tcp
+    image: macisamuele/openvpn:latest
+    labels:
+      org.label-schema.group: "vpn"
+    networks:
+    - monitor-net
+    restart: on-failure:3
+    volumes:
+    - /etc/openvpn:/etc/openvpn:rw
+    cap_add:
+    - NET_ADMIN
+
+version: '3.6'
