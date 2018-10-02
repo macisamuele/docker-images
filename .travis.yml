@@ -30,57 +30,10 @@ env:
 script:
 - make build-${SERVICE}
 - make push-${SERVICE}
-
-jobs:
-  include:
-    - &tag-SERVICE
-      stage: tag-SERVICE
-      script: make tag-${SERVICE}
-      env: SERVICE=alertmanager
-    - <<: *tag-SERVICE
-      env: SERVICE=caddy
-    - <<: *tag-SERVICE
-      env: SERVICE=cadvisor
-    - <<: *tag-SERVICE
-      env: SERVICE=dante
-    - <<: *tag-SERVICE
-      env: SERVICE=grafana
-    - <<: *tag-SERVICE
-      env: SERVICE=node-exporter
-    - <<: *tag-SERVICE
-      env: SERVICE=prometheus
-    - &push-manifest-SERVICE-sha
-      stage: push-manifest-SERVICE-sha
-      script: make push-manifest-${SERVICE}-sha
-      env: SERVICE=alertmanager
-    - <<: *push-manifest-SERVICE-sha
-      env: SERVICE=caddy
-    - <<: *push-manifest-SERVICE-sha
-      env: SERVICE=cadvisor
-    - <<: *push-manifest-SERVICE-sha
-      env: SERVICE=dante
-    - <<: *push-manifest-SERVICE-sha
-      env: SERVICE=grafana
-    - <<: *push-manifest-SERVICE-sha
-      env: SERVICE=node-exporter
-    - <<: *push-manifest-SERVICE-sha
-      env: SERVICE=prometheus
-    - &push-manifest-SERVICE
-      stage: push-manifest-SERVICE
-      script: make push-manifest-${SERVICE}
-      env: SERVICE=alertmanager
-    - <<: *push-manifest-SERVICE
-      env: SERVICE=caddy
-    - <<: *push-manifest-SERVICE
-      env: SERVICE=cadvisor
-    - <<: *push-manifest-SERVICE
-      env: SERVICE=dante
-    - <<: *push-manifest-SERVICE
-      env: SERVICE=grafana
-    - <<: *push-manifest-SERVICE
-      env: SERVICE=node-exporter
-    - <<: *push-manifest-SERVICE
-      env: SERVICE=prometheus
+- make tag-${SERVICE}
+- make tag-${SERVICE}
+- make push-manifest-${SERVICE}-sha
+- make push-manifest-${SERVICE}
 
 notifications:
   email: false
