@@ -46,6 +46,10 @@ ${DOCKER} pull "${latest_platform_image_name}" || echo "Pull failed, but it was 
 if [ "${SERVICE_NAME}" = "openvpn" ]; then
     echo "Copy Dockerfile to ${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}") and add qemu-*-static"
     sed -r 's|(FROM.*)|\1\n# Add qemu-*-static to allow execution of the build process from any platform\nCOPY qemu-*-static /usr/bin/\n|' "${TMP_DIR}/context/Dockerfile" > "${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}")"
+    if [ "${BUILD_PLATFORM}" = "armhf" ]; then
+        echo "Use different alpine base image while builing for armhf (linux-arm-v7)"
+        sed -ri 's|FROM alpine:latest|FROM easypi/alpine-arm:latest|' "${TMP_DIR}/context/$(dockerfile "${BUILD_PLATFORM}")"
+    fi
 fi
 
 echo "Start effective docker image build"
