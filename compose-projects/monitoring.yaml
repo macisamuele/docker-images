@@ -29,26 +29,10 @@ services:
     - monitor-net
     ports:
     - 3000:3000
-    - 8080:8080
     - 9090:9090
     - 9093:9093
     - 9100:9100
     restart: on-failure:3
-
-  cadvisor:
-    expose:
-    - 8080
-    image: macisamuele/cadvisor:latest
-    labels:
-      org.label-schema.group: "monitoring"
-    networks:
-    - monitor-net
-    restart: on-failure:3
-    volumes:
-    - /:/rootfs:ro
-    - /sys:/sys:ro
-    - /var/lib/docker:/var/lib/docker:ro
-    - /var/run:/var/run:ro
 
   grafana:
     expose:
