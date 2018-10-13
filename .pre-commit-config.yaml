@@ -44,3 +44,4 @@ repos:
     args:
     - -x
     files: ^.+\.sh$
+    exclude: ^metrics-node-exporter/.*\.sh$

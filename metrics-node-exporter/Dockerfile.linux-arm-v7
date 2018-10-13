@@ -1,0 +1,26 @@
+FROM resin/raspberrypi3-alpine:3.8 AS metrics_extractor_builder
+LABEL MAINTAINER="Samuele Maci <macisamuele@gmail.com>"
+LABEL DESCRIPTION="[Monitoring Tools - Builder] metrics_extractor"
+LABEL PLATFORM="armhf"
+
+RUN set -eux && \
+    apk update && \
+    apk add raspberrypi
+
+FROM alpine:3.8 AS metrics_extractor
+LABEL MAINTAINER="Samuele Maci <macisamuele@gmail.com>"
+LABEL DESCRIPTION="[Monitoring Tools - Builder] metrics_extractor"
+LABEL PLATFORM="armhf"
+
+# Add qemu-*-static to allow execution of the build process from any platform
+COPY qemu-*-static /usr/bin/
+
+COPY --from=metrics_extractor_builder /opt/vc/bin/   /opt/vc/bin/
+COPY --from=metrics_extractor_builder /opt/vc/lib/   /opt/vc/lib/
+
+ENV PATH=/opt/vc/bin:${PATH}
+
+ADD daemon.sh /code/daemon.sh
+ADD armhf-metrics.sh /code/metrics.sh
+
+CMD [ "/bin/sh", "/code/daemon.sh" ]

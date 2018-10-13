@@ -41,6 +41,8 @@ RUN adduser \
 # Copy node_exporter binaries
 COPY --from=node_exporter_builder /go/bin/* /bin/
 
+VOLUME /file_metrics
+
 # Container port, privileges and volumes
 EXPOSE 9100
 USER ${RUN_USER}
@@ -51,8 +53,13 @@ USER ${RUN_USER}
 
 # Default command
 CMD [ \
-    "/bin/node_exporter", \
-        "--path.procfs=/host/proc", \
-        "--path.sysfs=/host/sys", \
-        "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)" \
+"/bin/node_exporter", \
+    "--path.procfs=/host/proc", \
+    "--path.sysfs=/host/sys", \
+    "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)", \
+    "--collector.textfile.directory=/file_metrics/", \
+    "--collector.wifi", \
+    "--collector.interrupts", \
+    "--collector.tcpstat", \
+    "--collector.processes", \
 ]
