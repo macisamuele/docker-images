@@ -20,9 +20,9 @@ env:
   matrix:
   - SERVICE=alertmanager
   - SERVICE=caddy
-  - SERVICE=cadvisor
   - SERVICE=dante
   - SERVICE=grafana       MAKEFLAGS="-j 2" # Run jobs in parallel as grafana build takes a lot of time
+  - SERVICE=metrics-node-exporter
   - SERVICE=node-exporter
   - SERVICE=openvpn
   - SERVICE=prometheus
