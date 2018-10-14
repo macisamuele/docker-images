@@ -29,26 +29,24 @@ services:
     - monitor-net
     ports:
     - 3000:3000
-    - 8080:8080
     - 9090:9090
     - 9093:9093
     - 9100:9100
     restart: on-failure:3
 
-  cadvisor:
-    expose:
-    - 8080
-    image: macisamuele/cadvisor:latest
+  metrics-node-exporter:
+    image: macisamuele/metrics-node-exporter:latest
     labels:
       org.label-schema.group: "monitoring"
     networks:
     - monitor-net
     restart: on-failure:3
+    privileged: true
+    environment:
+      OUTPUT_FILE: /metrics_data/data.prom
     volumes:
-    - /:/rootfs:ro
-    - /sys:/sys:ro
-    - /var/lib/docker:/var/lib/docker:ro
-    - /var/run:/var/run:ro
+    - metrics_node_exporter_data:/metrics_data/
+    - /dev/vchiq:/dev/vchiq:ro
 
   grafana:
     expose:
@@ -77,6 +75,7 @@ services:
     # - /cgroup:/cgroup:ro # It does work only for Linux with cgroup enabled -> doesn't work on MacOS and raspian
     - /proc:/host/proc:ro
     - /sys:/host/sys:ro
+    - metrics_node_exporter_data:/file_metrics:ro
 
   prometheus:
     expose:
@@ -93,5 +92,6 @@ services:
 version: '3.6'
 
 volumes:
+  metrics_node_exporter_data: {}
   grafana_data: {}
   prometheus_data: {}
