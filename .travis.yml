@@ -21,7 +21,7 @@ env:
   - SERVICE=alertmanager
   - SERVICE=caddy
   - SERVICE=dante
-  - SERVICE=grafana       MAKEFLAGS="-j 2" # Run jobs in parallel as grafana build takes a lot of time
+  - SERVICE=grafana
   - SERVICE=metrics-node-exporter
   - SERVICE=node-exporter
   - SERVICE=openvpn
