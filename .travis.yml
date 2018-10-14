@@ -31,7 +31,6 @@ script:
 - make build-${SERVICE}
 - make push-${SERVICE}
 - make tag-${SERVICE}
-- make tag-${SERVICE}
 - make push-manifest-${SERVICE}-sha
 - make push-manifest-${SERVICE}
 
