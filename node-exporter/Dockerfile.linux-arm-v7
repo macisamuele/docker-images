@@ -53,13 +53,13 @@ USER ${RUN_USER}
 
 # Default command
 CMD [ \
-"/bin/node_exporter", \
-    "--path.procfs=/host/proc", \
-    "--path.sysfs=/host/sys", \
-    "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)", \
-    "--collector.textfile.directory=/file_metrics/", \
-    "--collector.wifi", \
-    "--collector.interrupts", \
-    "--collector.tcpstat", \
-    "--collector.processes", \
+    "/bin/node_exporter", \
+        "--path.procfs=/host/proc", \
+        "--path.sysfs=/host/sys", \
+        "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)", \
+        "--collector.textfile.directory=/file_metrics/", \
+        "--collector.wifi", \
+        "--collector.interrupts", \
+        "--collector.tcpstat", \
+        "--collector.processes" \
 ]
