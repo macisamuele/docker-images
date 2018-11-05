@@ -12,13 +12,12 @@ services:
     networks:
     - monitor-net
     restart: on-failure:3
-    # volumes:
-    # - ./alertmanager/config.yml:/etc/alertmanager/config.yml:ro  # This is needed in order to not publish slack secrets on github :)
+    volumes:
+    - ${CONFIG_FILES}/monitoring/alertmanager.yml:/etc/alertmanager/config.yml:ro  # This is needed in order to not publish slack secrets on github :)
 
   caddy:
     expose:
     - 3000
-    - 8080
     - 9090
     - 9093
     - 9100
@@ -43,6 +42,7 @@ services:
     restart: on-failure:3
     privileged: true
     environment:
+      DAEMON_INTERVAL: '2'
       OUTPUT_FILE: /metrics_data/data.prom
     volumes:
     - metrics_node_exporter_data:/metrics_data/
