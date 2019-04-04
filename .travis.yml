@@ -18,14 +18,8 @@ install:
 
 env:
   matrix:
-  - SERVICE=alertmanager
-  - SERVICE=caddy
   - SERVICE=dante
-  - SERVICE=grafana
-  - SERVICE=metrics-node-exporter
-  - SERVICE=node-exporter
   - SERVICE=openvpn
-  - SERVICE=prometheus
 
 script:
 - make build-${SERVICE}
